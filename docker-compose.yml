@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER:     sisyphus
+      POSTGRES_PASSWORD: sisyphus
+      POSTGRES_DB:       sisyphus
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sisyphus"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  tasks-service:
+    build:
+      context: apps/tasks-service
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: postgres://sisyphus:sisyphus@postgres:5432/sisyphus?sslmode=disable
+      GRPC_PORT: "50051"
+    ports:
+      - "50051:50051"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
