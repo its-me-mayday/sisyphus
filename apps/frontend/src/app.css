@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:            #000000;
+  --card-bg:       #010d01;
+  --header-bg:     rgba(0, 0, 0, 0.92);
+  --input-bg:      #000800;
+
+  --border:        #1a4d1a;
+  --border-bright: #00ff41;
+  --border-faint:  #0d2b0d;
+
+  --text-primary:  #00ff41;
+  --text-secondary:#00c032;
+  --muted:         #1a7a1a;
+  --dim:           #0d3d0d;
+
+  --accent:        #00ff41;
+  --accent-subtle: rgba(0, 255, 65, 0.07);
+  --accent-glow:   rgba(0, 255, 65, 0.4);
+
+  --amber:         #ffb000;
+  --amber-glow:    rgba(255, 176, 0, 0.35);
+
+  --green:         #00ff41;
+  --danger:        #ff2222;
+
+  --font-pixel: 'Press Start 2P', monospace;
+}
+
+html { font-size: 16px; image-rendering: pixelated; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-pixel);
+  min-height: 100vh;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0,0,0,0.18) 0px,
+    rgba(0,0,0,0.18) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+/* CRT flicker */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(0,255,65,0.03) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+  animation: flicker 6s step-end infinite;
+}
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  92%       { opacity: 1; }
+  93%       { opacity: 0.7; }
+  94%       { opacity: 1; }
+  96%       { opacity: 0.85; }
+  97%       { opacity: 1; }
+}
+
+/* CRT vignette */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.75) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+#app { min-height: 100vh; position: relative; z-index: 3; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border-bright); }
+
+::selection { background: var(--accent); color: #000; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 0; }
