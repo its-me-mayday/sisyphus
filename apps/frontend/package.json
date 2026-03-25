@@ -14,6 +14,7 @@
     "vite": "^8.0.1"
   },
   "dependencies": {
+    "svelte-dnd-action": "^0.9.69",
     "uuid": "^13.0.0"
   }
 }

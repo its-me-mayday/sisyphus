@@ -43,6 +43,10 @@ function createListsStore() {
       persist(lists => lists.filter(l => l.id !== id));
     },
 
+    reorderLists(newOrder) {
+  persist(() => newOrder);
+},
+
     addTodo(listId, text) {
       persist(lists => lists.map(l => l.id === listId ? {
         ...l,

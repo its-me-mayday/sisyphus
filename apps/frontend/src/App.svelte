@@ -2,6 +2,7 @@
   import { onMount, onDestroy, tick } from 'svelte';
   import { lists } from './stores/lists.js';
   import ListCard from './components/ListCard.svelte';
+  import { dndzone } from 'svelte-dnd-action';
 
   let newListName = '';
   let creatingList = false;
@@ -29,6 +30,15 @@
   function handleKeydown(e) {
     if (e.key === 'Enter') createList();
     if (e.key === 'Escape') { creatingList = false; newListName = ''; }
+  }
+
+  // drag & drop
+  function handleDndConsider(e) {
+    lists.reorderLists(e.detail.items);
+  }
+
+  function handleDndFinalize(e) {
+    lists.reorderLists(e.detail.items);
   }
 </script>
 
@@ -89,11 +99,16 @@
         <span class="dir-path">/home/sisyphus/tasks/</span>
         <span class="dir-count">{$lists.length} entries</span>
       </div>
-      <div class="grid">
-        {#each $lists as list (list.id)}
-          <ListCard {list} />
-        {/each}
-      </div>
+<div
+  class="grid"
+  use:dndzone={{ items: $lists, flipDurationMs: 200 }}
+  on:consider={handleDndConsider}
+  on:finalize={handleDndFinalize}
+>
+  {#each $lists as list (list.id)}
+    <ListCard {list} />
+  {/each}
+</div>
     {/if}
   </main>
 
