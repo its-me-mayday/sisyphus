@@ -47,12 +47,21 @@ function createListsStore() {
   persist(() => newOrder);
 },
 
-    addTodo(listId, text) {
-      persist(lists => lists.map(l => l.id === listId ? {
-        ...l,
-        todos: [...l.todos, { id: uuidv4(), text: text.trim(), done: false, createdAt: Date.now() }]
-      } : l));
-    },
+addTodo(listId, text) {
+  persist(lists =>
+    lists.map(l => l.id === listId ? {
+      ...l,
+      todos: [...l.todos, {
+        id: uuidv4(),
+        text: text.trim(),
+        done: false,
+        priority: 'medium',
+        dueDate: null,
+        createdAt: Date.now()
+      }]
+    } : l)
+  );
+},
 
     toggleTodo(listId, todoId) {
       persist(lists => lists.map(l => l.id === listId ? {
@@ -67,6 +76,24 @@ function createListsStore() {
         todos: l.todos.map(t => t.id === todoId ? { ...t, text: text.trim() } : t)
       } : l));
     },
+
+    setTodoPriority(listId, todoId, priority) {
+  persist(lists =>
+    lists.map(l => l.id === listId ? {
+      ...l,
+      todos: l.todos.map(t => t.id === todoId ? { ...t, priority } : t)
+    } : l)
+  );
+},
+
+setTodoDueDate(listId, todoId, dueDate) {
+  persist(lists =>
+    lists.map(l => l.id === listId ? {
+      ...l,
+      todos: l.todos.map(t => t.id === todoId ? { ...t, dueDate } : t)
+    } : l)
+  );
+},
 
     deleteTodo(listId, todoId) {
       persist(lists => lists.map(l => l.id === listId ? {
