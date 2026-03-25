@@ -83,3 +83,33 @@ body::after {
 
 ::selection { background: var(--accent); color: #000; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 0; }
+
+/* LIGHT THEME */
+body.light {
+  --bg:            #f0f0e8;
+  --card-bg:       #e8e8e0;
+  --header-bg:     rgba(240, 240, 232, 0.92);
+  --input-bg:      #f0f0e8;
+
+  --border:        #8a9a6a;
+  --border-bright: #2a6a2a;
+  --border-faint:  #c8c8b8;
+
+  --text-primary:  #1a3a1a;
+  --text-secondary:#2a5a2a;
+  --muted:         #6a8a6a;
+  --dim:           #a0b890;
+
+  --accent:        #2a6a2a;
+  --accent-subtle: rgba(42, 106, 42, 0.08);
+  --accent-glow:   rgba(42, 106, 42, 0.3);
+
+  --amber:         #8a5a00;
+  --amber-glow:    rgba(138, 90, 0, 0.3);
+
+  --green:         #2a6a2a;
+  --danger:        #aa2222;
+}
+
+body.light::before { display: none; }
+body.light::after  { display: none; }

@@ -40,6 +40,14 @@
   function handleDndFinalize(e) {
     lists.reorderLists(e.detail.items);
   }
+
+  // theme
+let isDark = localStorage.getItem('sisyphus_theme') !== 'light';
+
+$: {
+  document.body.classList.toggle('light', !isDark);
+  localStorage.setItem('sisyphus_theme', isDark ? 'dark' : 'light');
+}
 </script>
 
 <div class="app">
@@ -54,6 +62,9 @@
       <span class="label">LISTS:</span>
       <span class="val">{$lists.length}</span>
     </div>
+    <button class="theme-btn" on:click={() => isDark = !isDark}>
+  {isDark ? '[LIGHT]' : '[DARK]'}
+</button>
   </header>
 
   <div class="prompt-bar">
@@ -268,4 +279,19 @@
   }
   .amber { background: var(--amber) !important; }
   .right { margin-left: auto; background: var(--dim) !important; color: var(--muted) !important; }
+
+  .theme-btn {
+  background: none;
+  border: 1px solid var(--border-bright);
+  color: var(--text-primary);
+  font-family: var(--font-pixel);
+  font-size: 0.4rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  transition: all 0.1s;
+}
+.theme-btn:hover {
+  background: var(--accent-subtle);
+  color: var(--accent);
+}
 </style>
