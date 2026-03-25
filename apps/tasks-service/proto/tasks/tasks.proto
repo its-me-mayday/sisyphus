@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package tasks;
+
+option go_package = "github.com/its-me-mayday/sisyphus/proto/tasks";
+
+// ─── Models ───────────────────────────────────────────────
+
+enum Priority {
+  PRIORITY_UNSPECIFIED = 0;
+  LOW                  = 1;
+  MEDIUM               = 2;
+  HIGH                 = 3;
+}
+
+message Todo {
+  string   id         = 1;
+  string   list_id    = 2;
+  string   text       = 3;
+  bool     done       = 4;
+  Priority priority   = 5;
+  string   due_date   = 6; // ISO 8601 date: "2026-03-25"
+  int64    created_at = 7;
+}
+
+message TaskList {
+  string   id         = 1;
+  string   name       = 2;
+  int64    created_at = 3;
+  repeated Todo todos = 4;
+}
+
+// ─── Requests / Responses ─────────────────────────────────
+
+message CreateListRequest  { string name    = 1; }
+message CreateListResponse { TaskList list  = 1; }
+
+message GetListRequest     { string id      = 1; }
+message GetListResponse    { TaskList list  = 1; }
+
+message ListListsRequest   {}
+message ListListsResponse  { repeated TaskList lists = 1; }
+
+message UpdateListRequest  { string id = 1; string name = 2; }
+message UpdateListResponse { TaskList list = 1; }
+
+message DeleteListRequest  { string id      = 1; }
+message DeleteListResponse { bool success   = 1; }
+
+message CreateTodoRequest  { string list_id = 1; string text = 2; Priority priority = 3; string due_date = 4; }
+message CreateTodoResponse { Todo todo      = 1; }
+
+message UpdateTodoRequest  { string id = 1; string text = 2; bool done = 3; Priority priority = 4; string due_date = 5; }
+message UpdateTodoResponse { Todo todo = 1; }
+
+message DeleteTodoRequest  { string id      = 1; }
+message DeleteTodoResponse { bool success   = 1; }
+
+// ─── Service ──────────────────────────────────────────────
+
+service TasksService {
+  // Lists
+  rpc CreateList (CreateListRequest)  returns (CreateListResponse);
+  rpc GetList    (GetListRequest)     returns (GetListResponse);
+  rpc ListLists  (ListListsRequest)   returns (ListListsResponse);
+  rpc UpdateList (UpdateListRequest)  returns (UpdateListResponse);
+  rpc DeleteList (DeleteListRequest)  returns (DeleteListResponse);
+
+  // Todos
+  rpc CreateTodo (CreateTodoRequest)  returns (CreateTodoResponse);
+  rpc UpdateTodo (UpdateTodoRequest)  returns (UpdateTodoResponse);
+  rpc DeleteTodo (DeleteTodoRequest)  returns (DeleteTodoResponse);
+}
