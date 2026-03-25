@@ -57,7 +57,9 @@
         on:keydown={handleListKeydown}
       />
     {:else}
-      <span class="tb-name">{list.name.toUpperCase()}</span>
+<span class="tb-name" on:dblclick={() => { editing = true; editName = list.name; }}>
+  {list.name.toUpperCase()}
+</span>
     {/if}
     <span class="tb-bracket">]</span>
     <span class="tb-spacer"></span>
