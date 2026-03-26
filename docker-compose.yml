@@ -28,5 +28,41 @@ services:
       postgres:
         condition: service_healthy
 
+  acl-service:
+    build:
+      context: apps/acl-service
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: postgres://sisyphus:sisyphus@postgres:5432/sisyphus?sslmode=disable
+      GRPC_PORT: "50052"
+    ports:
+      - "50052:50052"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  bff:
+    build:
+      context: apps/bff
+      dockerfile: Dockerfile
+    environment:
+      HTTP_PORT:   "8090"
+      TASKS_ADDR:  tasks-service:50051
+      ACL_ADDR:    acl-service:50052
+    ports:
+      - "8090:8090"
+    depends_on:
+      - tasks-service
+      - acl-service
+
+  frontend:
+    build:
+      context: apps/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - bff
+
 volumes:
   postgres_data:
