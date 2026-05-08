@@ -10,7 +10,10 @@
   let cursorInterval;
   let inputEl;
 
-  onMount(() => { cursorInterval = setInterval(() => cursorVisible = !cursorVisible, 530); });
+onMount(() => {
+  cursorInterval = setInterval(() => cursorVisible = !cursorVisible, 530);
+  lists.load();
+});
   onDestroy(() => clearInterval(cursorInterval));
 
   async function startCreating() {
